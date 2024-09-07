@@ -1,10 +1,10 @@
-import './App.css'
-
 function App() {
 
   return (
     <>
-      <h1>mintesnot afework</h1>     
+      <div className="text-center">
+          <h1>mintesnot afework</h1>
+      </div>
     </>
   )
 }
