@@ -11,11 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// import java.util.InputMismatchException;
-// import java.util.regex.Matcher;
-// import java.util.regex.Pattern;
-
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -35,16 +30,4 @@ public class Employee {
 
     @Column(name = "email",nullable = false,unique = true)
     private String email;
-
-    // public void setEmail(String email){
-    //     String pattern = ".am";
-    //     Boolean match = Pattern.matches(email, pattern);
-
-    //     if (match){
-    //         this.email = email;
-    //     }
-    //     else{
-    //         throw new InputMismatchException();
-    //     }
-    // }
 }

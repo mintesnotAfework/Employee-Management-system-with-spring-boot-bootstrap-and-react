@@ -2,8 +2,12 @@ package com.mintesnot.ems.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +20,7 @@ import com.mintesnot.ems.dto.EmployeeDto;
 import com.mintesnot.ems.service.EmployeeService;
 import lombok.AllArgsConstructor;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/employees")
 @AllArgsConstructor
@@ -24,8 +29,14 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDto> createEntity(@RequestBody EmployeeDto employeeDto){
-        EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
-        return new ResponseEntity<>(savedEmployee,HttpStatus.CREATED);
+        try{
+            EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
+            return new ResponseEntity<>(savedEmployee,HttpStatus.CREATED);
+        }
+        catch(DataIntegrityViolationException d){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
     @GetMapping("{id}")
@@ -47,7 +58,7 @@ public class EmployeeController {
 
     @PutMapping("{id}")
     public ResponseEntity<EmployeeDto> updateEntity(@PathVariable Long id, @RequestBody EmployeeDto employeeDto){
-        if(id == employeeDto.getId()){
+        if(Objects.equals(id, employeeDto.getId())){
             try{
                 EmployeeDto udpatedEmployee = employeeService.updateEmployee(id, employeeDto);
                 return new ResponseEntity<>(udpatedEmployee,HttpStatus.ACCEPTED); 
@@ -65,7 +76,7 @@ public class EmployeeController {
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteEntity(@PathVariable Long id){
         try{
-            if(employeeService.deleteEmployee(id)){
+            if(Boolean.TRUE.equals(employeeService.deleteEmployee(id))){
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
             }
             else{

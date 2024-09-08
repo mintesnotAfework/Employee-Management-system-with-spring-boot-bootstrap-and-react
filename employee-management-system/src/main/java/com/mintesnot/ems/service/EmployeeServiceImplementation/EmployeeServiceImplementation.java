@@ -2,7 +2,10 @@ package com.mintesnot.ems.service.EmployeeServiceImplementation;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.mintesnot.ems.dto.EmployeeDto;
 import com.mintesnot.ems.entity.Employee;
@@ -18,7 +21,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
     private EmployeeRepositoy employeeRepositoy;
 
     @Override
-    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) throws DataIntegrityViolationException {
         Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
         Employee savedEmployee = employeeRepositoy.save(employee);
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
@@ -40,7 +43,7 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
     @Override
     public EmployeeDto updateEmployee(Long id,EmployeeDto employeeDto) throws NoSuchElementException{
-        if(id == employeeDto.getId()){
+        if(Objects.equals(id, employeeDto.getId())){
             Employee oldEmployee = employeeRepositoy.findById(id).orElseThrow();
             oldEmployee.setFirstName(employeeDto.getFirstName());
             oldEmployee.setLastName(employeeDto.getLastName());
