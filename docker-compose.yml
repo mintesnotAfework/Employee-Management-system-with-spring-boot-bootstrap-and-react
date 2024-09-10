@@ -1,0 +1,42 @@
+services:
+  db:
+    container_name: ems_postgres
+    image: postgres:12.20-alpine3.20
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mintesnot
+      POSTGRES_PASSWORD: mintesnot
+      PGDATA: /data/postgres
+    volumes:
+      - pgdata:/data/postgres
+  spring:
+    container_name: ems_spring
+    build: 
+      context: ./employee-management-system 
+    restart: always
+    ports:
+      - 65001:8080
+    depends_on:
+      - db
+  react:
+    container_name: ems_react
+    build: 
+      context: ./ems-frontend
+    restart: always
+    ports:
+      - "80:3000"
+    depends_on:
+      - spring
+  # proxy:
+  #   container_name: ems_nginx
+  #   image: nginx:stable-alpine3.20-perl
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - react
+  
+
+
+volumes:
+  pgdata: 

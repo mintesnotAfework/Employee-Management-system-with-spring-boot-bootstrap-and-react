@@ -1,10 +1,10 @@
 import axios from 'axios'
-// import { useNavigate } from 'react-router-dom';
 
-const REST_API_BASE_URL = "http://localhost:8080/api/employees";
+const REST_API_BASE_URL = "http://localhost:65001/api/employees";
 
 
 export const getAllEmployee = () => {
+    console.log(REST_API_BASE_URL)
     const URL = REST_API_BASE_URL + "/all";
     return axios.get(URL);
 }
