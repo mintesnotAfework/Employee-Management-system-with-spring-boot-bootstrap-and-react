@@ -29,10 +29,11 @@ services:
       - spring
   # proxy:
   #   container_name: ems_nginx
-  #   image: nginx:stable-alpine3.20-perl
+  #   image: 
+  #     context: ./proxy
   #   restart: always
   #   ports:
-  #     - "80:80"
+  #     - "443:443"
   #   depends_on:
   #     - react
   
